@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="nav-wrapper w-full bg-gray-200">
+    <div className="nav-wrapper w-full bg-gray-200 sticky top-0">
       <div className="flex container mx-auto justify-between p-2 items-center">
         <span className="logo">Cloth store</span>
         <div className="flex gap-6">

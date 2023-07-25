@@ -14,7 +14,7 @@ const Products = () => {
   }, []);
 
   return (
-    <div className="flex gap-1 container mx-auto flex-wrap justify-between items-center">
+    <div className=" w-[90%] mx-auto flex gap-4 flex-wrap justify-evenly items-center">
       {products.length > 0 &&
         products.map((product) => {
           return <Productcard {...product} />;
