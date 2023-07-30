@@ -16,7 +16,7 @@ const Productcard = ({
   }
 
   return (
-    <div className="w-[20rem] sm:h-[20rem] sm:w-[24rem] md:[w-45vw] lg:w-[16rem] md:h-[22rem]  rounded-lg shadow-md flex flex-col justify-between ">
+    <div className="w-[20rem] sm:h-[26rem] sm:w-[24rem] md:[w-45vw] lg:w-[16rem] md:h-[22rem]  rounded-lg shadow-md flex flex-col justify-between ">
       <img
         className=" w-full object-contain h-[20vh] "
         src={image}

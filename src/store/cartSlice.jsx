@@ -1,27 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  data: localStorage.getItem("cartItems")
+    ? JSON.parse(localStorage.getItem("cartItems"))
+    : [],
+};
 const cartSlice = createSlice({
   name: "cart",
-  initialState: {
-    data: [],
-    totalCost: 0,
-    // totalValue: function () {
-    //   sum = 0;
-    //   this.data.forEach((item) => {
-    //     sum += item.price;
-    //   });
-    //   return sum;
-    // },
-  },
+  initialState: initialState,
   reducers: {
     add(state, action) {
-      state.totalCost += action.payload.price;
-      state.data.push(action.payload);
+      let idx = state.data.findIndex((item) => item.id == action.payload.id);
+      if (idx !== -1) {
+        state.data[idx].qty += 1;
+      } else {
+        action.payload.qty = 1;
+        state.data.push(action.payload);
+      }
+
+      localStorage.setItem("cartItems", JSON.stringify(state.data));
     },
     remove(state, action) {
-      let item = state.data.findIndex((item) => item.id === action.payload);
-      state.totalCost -= state.data[item].price;
-      state.data = state.data.filter((item) => item.id !== action.payload);
+      let item = state.data.find((item) => item.id === action.payload);
+      if (item.qty == 1) {
+        state.data = state.data.filter((item) => item.id !== action.payload);
+      } else {
+        let index = state.data.findIndex((item) => item.id === action.payload);
+        state.data[index].qty -= 1;
+      }
+      localStorage.setItem("cartItems", JSON.stringify(state.data));
     },
   },
 });
