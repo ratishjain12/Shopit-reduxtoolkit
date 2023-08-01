@@ -1,9 +1,27 @@
 import { Link } from "react-router-dom";
-
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { useState } from "react";
 export default function Login() {
+  const [userData, setUserData] = useState({});
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: async ({ code }) => {
+      const tokens = await axios.post("http://localhost:3001/auth/google", {
+        // http://localhost:3001/auth/google backend that will exchange the code
+        code,
+      });
+      console.log(tokens);
+      setUserData(jwt_decode(tokens.data.id_token));
+      localStorage.setItem("userData", userData);
+    },
+    flow: "auth-code",
+  });
+
   return (
     <>
-      <Link to="/">
+      <Link to="/login">
         <p className="text-2xl px-6 ">&larr;</p>
       </Link>
       <div className="relative flex flex-col justify-center min-h-screen overflow-hidden items-center ">
@@ -14,7 +32,7 @@ export default function Login() {
           <form className="mt-6">
             <div className="mb-2">
               <label
-                for="email"
+                htmlFor="email"
                 className="block text-sm font-semibold text-gray-800"
               >
                 Email
@@ -26,7 +44,7 @@ export default function Login() {
             </div>
             <div className="mb-2">
               <label
-                for="password"
+                htmlFor="password"
                 className="block text-sm font-semibold text-gray-800"
               >
                 Password
@@ -52,6 +70,7 @@ export default function Login() {
             <button
               type="button"
               className="flex items-center justify-center w-full p-2 border border-gray-600 rounded-md focus:ring-2 focus:ring-offset-1 focus:ring-violet-600"
+              onClick={() => googleLogin()}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

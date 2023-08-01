@@ -7,20 +7,27 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useEffect } from "react";
 function App() {
+  // useEffect(() => {
+
+  // }, []);
+  console.log(import.meta.env.VITE_CLIENT_ID);
   return (
     <>
-      <Provider store={store}>
-        <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route index element={<Home />} />
-            <Route path="/cart" element={<Cart />} />
-          </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </Provider>
+      <GoogleOAuthProvider clientId={`${import.meta.env.VITE_CLIENT_ID}`}>
+        <Provider store={store}>
+          <Routes>
+            <Route path="/" element={<Navbar />}>
+              <Route index element={<Home />} />
+              <Route path="/cart" element={<Cart />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </Provider>
+      </GoogleOAuthProvider>
     </>
   );
 }
