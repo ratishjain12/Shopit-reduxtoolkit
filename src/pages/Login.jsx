@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { useState } from "react";
 export default function Login() {
   const [userData, setUserData] = useState({});
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
@@ -19,13 +21,20 @@ export default function Login() {
     flow: "auth-code",
   });
 
+  if (localStorage.getItem("userData")) {
+    navigate(location.state.path);
+  }
+  function navigationHandler() {
+    navigate(location.state.path);
+  }
+
   return (
     <>
-      <Link to="/login">
+      <button onClick={navigationHandler}>
         <p className="text-2xl px-6 ">&larr;</p>
-      </Link>
+      </button>
       <div className="relative flex flex-col justify-center min-h-screen overflow-hidden items-center ">
-        <div className=" w-[28rem] p-6 bg-white rounded-md shadow-xl lg:max-w-xl">
+        <div className="w-[90%] md:w-[28rem] p-6 bg-white rounded-md shadow-xl lg:max-w-xl">
           <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
             Sign in
           </h1>

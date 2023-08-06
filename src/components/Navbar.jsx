@@ -1,7 +1,25 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
+
 import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useState, useEffect } from "react";
 const Navbar = () => {
   const item = useSelector((state) => state.cart.data);
+  const [status, setStatus] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  function navigationHandler() {
+    console.log(location);
+    navigate("/login", { state: { path: location.pathname } });
+  }
+  function logout() {
+    localStorage.setItem("userData", null);
+    setStatus(false);
+  }
+  useEffect(() => {
+    if (localStorage.getItem("userData")) {
+      setStatus(true);
+    }
+  }, []);
 
   return (
     <>
@@ -17,7 +35,11 @@ const Navbar = () => {
                 {item.length}
               </span>{" "}
             </span>
-            <Link to="/login">Login</Link>
+            {status ? (
+              <button onClick={logout}>Logout </button>
+            ) : (
+              <button onClick={navigationHandler}>Login</button>
+            )}
           </div>
         </div>
       </div>
