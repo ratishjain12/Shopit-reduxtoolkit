@@ -1,13 +1,21 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import jwt_decode from "jwt-decode";
-import { useState } from "react";
+import { useContext } from "react";
+import { UserContext } from "../UserContext";
+
 export default function Login() {
-  const [userData, setUserData] = useState({});
   const navigate = useNavigate();
   const location = useLocation();
+  const { setStatus } = useContext(UserContext);
 
+  function redirect() {
+    if (localStorage.getItem("userData") != null) {
+      console.log(location.state.path);
+      navigate(location.state.path);
+      setStatus(true);
+    }
+  }
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
       const tokens = await axios.post("http://localhost:3001/auth/google", {
@@ -15,15 +23,12 @@ export default function Login() {
         code,
       });
       console.log(tokens);
-      setUserData(jwt_decode(tokens.data.id_token));
-      localStorage.setItem("userData", userData);
+      localStorage.setItem("userData", tokens.data.id_token);
+      redirect();
     },
     flow: "auth-code",
   });
 
-  if (localStorage.getItem("userData")) {
-    navigate(location.state.path);
-  }
   function navigationHandler() {
     navigate(location.state.path);
   }

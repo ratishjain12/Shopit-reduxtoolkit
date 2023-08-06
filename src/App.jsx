@@ -10,9 +10,6 @@ import Register from "./pages/Register";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useEffect } from "react";
 function App() {
-  // useEffect(() => {
-
-  // }, []);
   console.log(import.meta.env.VITE_CLIENT_ID);
   return (
     <>

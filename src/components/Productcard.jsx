@@ -32,7 +32,7 @@ const Productcard = ({
         </p>
         <button
           onClick={handleAdd}
-          className="w-full px-4 py-2 text-sm text-white bg-black rounded shadow"
+          className="w-full px-4 py-2 text-sm text-white bg-[#764abc] rounded shadow"
         >
           Add to cart
         </button>

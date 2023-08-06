@@ -1,29 +1,38 @@
 import { Link, Outlet, useNavigate, useLocation } from "react-router-dom";
-
+import { useContext } from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState, useEffect } from "react";
+import jwtDecode from "jwt-decode";
+import { UserContext } from "../UserContext";
 const Navbar = () => {
   const item = useSelector((state) => state.cart.data);
-  const [status, setStatus] = useState(false);
+  const { status, setStatus, setUserInfo, userInfo } = useContext(UserContext);
+
   const navigate = useNavigate();
   const location = useLocation();
+
   function navigationHandler() {
     console.log(location);
     navigate("/login", { state: { path: location.pathname } });
   }
+
   function logout() {
-    localStorage.setItem("userData", null);
+    localStorage.removeItem("userData");
+    navigate("/");
     setStatus(false);
   }
+
   useEffect(() => {
-    if (localStorage.getItem("userData")) {
+    if (localStorage.getItem("userData") != null) {
       setStatus(true);
+      setUserInfo(jwtDecode(localStorage.getItem("userData")));
+      console.log(userInfo);
     }
   }, []);
 
   return (
     <>
-      <div className="nav-wrapper w-full bg-gray-200 sticky top-0">
+      <div className="nav-wrapper w-full bg-[#764abc] text-white sticky top-0">
         <div className="flex container mx-auto justify-between p-2 items-center">
           <span className="logo">Shopit store</span>
           <div className="flex gap-6">
@@ -36,7 +45,16 @@ const Navbar = () => {
               </span>{" "}
             </span>
             {status ? (
-              <button onClick={logout}>Logout </button>
+              <>
+                <button className="flex">
+                  <img
+                    src={userInfo?.picture}
+                    className="w-[22px] mr-2 rounded-full"
+                  />
+                  {userInfo.name}
+                </button>
+                <button onClick={logout}>Logout </button>
+              </>
             ) : (
               <button onClick={navigationHandler}>Login</button>
             )}
