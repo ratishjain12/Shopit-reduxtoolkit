@@ -1,18 +1,31 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../UserContext";
-
+import { useCookies } from "react-cookie";
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cookies, setCookie] = useCookies(["token"]);
   const { setStatus } = useContext(UserContext);
 
+  const instance = axios.create({
+    withCredentials: true,
+    baseURL: "http://localhost:3001",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
   function redirect() {
-    if (localStorage.getItem("userData") != null) {
+    if (localStorage.getItem("userData") != null || cookies.token) {
       console.log(location.state.path);
-      navigate(location.state.path);
+      navigate(location.state ? location.state.path : "/");
       setStatus(true);
     }
   }
@@ -30,7 +43,21 @@ export default function Login() {
   });
 
   function navigationHandler() {
-    navigate(location.state.path);
+    navigate(location.state ? location.state.path : "/");
+  }
+  async function handleLogin(e) {
+    e.preventDefault();
+    const res = await instance.post("/login", {
+      email: email,
+      password: password,
+      withCredentials: true,
+    });
+    console.log(res.data);
+    if (res.status === 400) {
+      alert(res.data);
+    } else {
+      navigationHandler();
+    }
   }
 
   return (
@@ -53,6 +80,8 @@ export default function Login() {
               </label>
               <input
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
               />
             </div>
@@ -65,6 +94,8 @@ export default function Login() {
               </label>
               <input
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
               />
             </div>
@@ -72,7 +103,10 @@ export default function Login() {
               Forget Password?
             </a>
             <div className="mt-6">
-              <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600">
+              <button
+                className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-purple-700 rounded-md hover:bg-purple-600 focus:outline-none focus:bg-purple-600"
+                onClick={handleLogin}
+              >
                 Login
               </button>
             </div>
@@ -99,12 +133,14 @@ export default function Login() {
           <p className="mt-8 text-xs font-light text-center text-gray-700">
             {" "}
             Don't have an account?{" "}
-            <Link
-              to="/register"
+            <button
+              onClick={() =>
+                navigate("/register", { state: { path: location.state.path } })
+              }
               className="font-medium text-purple-600 hover:underline"
             >
               Sign up
-            </Link>
+            </button>
           </p>
         </div>
       </div>

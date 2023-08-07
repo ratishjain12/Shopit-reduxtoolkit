@@ -3,6 +3,8 @@ import { remove, add } from "../store/cartSlice";
 import { useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../UserContext";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 
 const Cart = () => {
   const products = useSelector((state) => state.cart.data);
@@ -10,9 +12,26 @@ const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [cookies, setCookie] = useCookies(["token"]);
+  const instance = axios.create({
+    withCredentials: true,
+    baseURL: "http://localhost:3001",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
 
+  function verify() {
+    if (cookies.token) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   useEffect(() => {
-    if (!status && !localStorage.getItem("userData")) {
+    if (!status && !localStorage.getItem("userData") && !verify()) {
       alert("Please login");
       navigate("/login", { state: { path: location.pathname } });
       return;

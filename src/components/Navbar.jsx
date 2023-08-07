@@ -4,10 +4,21 @@ import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
 import { UserContext } from "../UserContext";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 const Navbar = () => {
+  const [cookies, setCookie] = useCookies(["token"]);
   const item = useSelector((state) => state.cart.data);
   const { status, setStatus, setUserInfo, userInfo } = useContext(UserContext);
-
+  const instance = axios.create({
+    withCredentials: true,
+    baseURL: "http://localhost:3001",
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,17 +27,32 @@ const Navbar = () => {
     navigate("/login", { state: { path: location.pathname } });
   }
 
-  function logout() {
-    localStorage.removeItem("userData");
+  async function logout() {
+    if (localStorage.getItem("userData")) {
+      localStorage.removeItem("userData");
+    } else {
+      await instance.post("/logout");
+    }
+
     navigate("/");
     setStatus(false);
   }
+
+  const verify = async () => {
+    if (cookies.token) {
+      const res = await instance.post("verify", { withCredentials: true });
+      setUserInfo(res.data);
+      setStatus(true);
+    }
+  };
 
   useEffect(() => {
     if (localStorage.getItem("userData") != null) {
       setStatus(true);
       setUserInfo(jwtDecode(localStorage.getItem("userData")));
       console.log(userInfo);
+    } else {
+      verify();
     }
   }, []);
 
@@ -51,7 +77,7 @@ const Navbar = () => {
                     src={userInfo?.picture}
                     className="w-[22px] mr-2 rounded-full"
                   />
-                  {userInfo.name}
+                  {userInfo?.name ? userInfo.name : userInfo?.username}
                 </button>
                 <button onClick={logout}>Logout </button>
               </>
