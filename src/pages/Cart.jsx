@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import PayButton from "./PayButton";
 
 const Cart = () => {
   const products = useSelector((state) => state.cart.data);
@@ -89,9 +90,7 @@ const Cart = () => {
             <div className="btn mx-2 text-center mt-12">
               Cart total: ${calcTotalCost().toFixed(2)}
             </div>
-            <button className="bg-transparent border-2  border-[#764abc] hover:bg-[#764abc] hover:text-white text-black font-bold rounded-lg py-2 text-center mt-4 flex-1 mx-2">
-              Checkout
-            </button>
+            <PayButton cartItems={products} />
           </div>
         )}
       </div>
