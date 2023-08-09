@@ -60,7 +60,11 @@ const Navbar = () => {
     <>
       <div className="nav-wrapper w-full bg-[#764abc] text-white sticky top-0">
         <div className="flex container mx-auto justify-between p-2 items-center">
-          <span className="logo">Shopit store</span>
+          <Link to="/">
+            <div className="">
+              <span className="logo">Shopit store</span>
+            </div>
+          </Link>
           <div className="flex gap-6">
             <Link to="/">Home</Link>
             <Link to="/cart">Cart</Link>
@@ -73,10 +77,12 @@ const Navbar = () => {
             {status ? (
               <>
                 <button className="flex">
-                  <img
-                    src={userInfo?.picture}
-                    className="w-[22px] mr-2 rounded-full"
-                  />
+                  {userInfo?.picture && (
+                    <img
+                      src={userInfo?.picture}
+                      className="w-[22px] mr-2 rounded-full"
+                    />
+                  )}
                   {userInfo?.name ? userInfo.name : userInfo?.username}
                 </button>
                 <button onClick={logout}>Logout </button>

@@ -1,3 +1,4 @@
+import { ToastContainer, toast } from "react-toastify";
 import { add } from "../store/cartSlice";
 import { useDispatch } from "react-redux";
 const Productcard = ({
@@ -13,6 +14,16 @@ const Productcard = ({
 
   function handleAdd() {
     dispatch(add({ id, category, description, image, price, rating, title }));
+    toast.success("Product Added to Cart", {
+      position: "bottom-left",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   }
 
   return (
@@ -37,6 +48,18 @@ const Productcard = ({
           Add to cart
         </button>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+      />
     </div>
   );
 };

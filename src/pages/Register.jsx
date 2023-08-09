@@ -29,7 +29,7 @@ export default function Register() {
       withCredentials: true,
     });
     console.log(res);
-    if (res.statusText === "OK") {
+    if (res.status === 200) {
       toast.success("Registeration Successful", {
         position: "top-center",
         autoClose: 2000,

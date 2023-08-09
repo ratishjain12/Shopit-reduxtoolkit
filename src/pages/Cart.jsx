@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { UserContext } from "../UserContext";
 import { useCookies } from "react-cookie";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import PayButton from "./PayButton";
 
@@ -40,6 +41,19 @@ const Cart = () => {
   }, []);
 
   function handleRemove(id) {
+    let item = products.find((item) => item.id === id);
+    if (item.qty === 1) {
+      toast.error("Product Removed from Cart", {
+        position: "bottom-left",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
     dispatch(remove(id));
   }
   function handleAdd(product) {
@@ -94,6 +108,18 @@ const Cart = () => {
           </div>
         )}
       </div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 };
