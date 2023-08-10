@@ -71,7 +71,7 @@ const Navbar = () => {
             <span>
               <span className="font-bold">Cart items:</span>
               <span className="bg-black text-white rounded-full px-2 py-1 text-sm ml-1">
-                {item.length}
+                {item?.length}
               </span>{" "}
             </span>
             {status ? (

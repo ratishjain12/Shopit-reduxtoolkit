@@ -32,7 +32,7 @@ const cartSlice = createSlice({
     },
     clearCart(state, action) {
       state.data = [];
-      localStorage.setItem("cartItems", null);
+      localStorage.setItem("cartItems", []);
     },
   },
 });

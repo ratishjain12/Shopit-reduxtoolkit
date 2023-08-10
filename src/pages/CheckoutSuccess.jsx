@@ -2,12 +2,15 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../store/cartSlice";
 import { ToastContainer, toast } from "react-toastify";
+
+import Lottie from "lottie-react";
+import checkOut from "./checkout.json";
 const CheckoutSuccess = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(clearCart());
     toast.success("Cart Items Cleared", {
-      position: "top-center",
+      position: "bottom-left",
       autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -18,8 +21,11 @@ const CheckoutSuccess = () => {
     });
   }, []);
   return (
-    <div>
-      <h2>Checkout Success</h2>
+    <div className="flex justify-center flex-col items-center">
+      <Lottie animationData={checkOut} loop={false} />
+      <h2 className="text-xl bg-blue-400 p-2 rounded-lg text-white">
+        Checkout Success
+      </h2>
 
       <ToastContainer
         position="top-center"
