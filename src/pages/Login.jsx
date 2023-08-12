@@ -74,7 +74,7 @@ export default function Login() {
             <div className="mb-2">
               <label
                 htmlFor="email"
-                className="block text-sm font-semibold text-gray-800"
+                className="block text-sm font-semibold text-gray-800 "
               >
                 Email
               </label>

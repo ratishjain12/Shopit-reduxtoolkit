@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../store/cartSlice";
 import { ToastContainer, toast } from "react-toastify";
-
 import Lottie from "lottie-react";
 import checkOut from "./checkout.json";
+
 const CheckoutSuccess = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(clearCart());
     toast.success("Cart Items Cleared", {
