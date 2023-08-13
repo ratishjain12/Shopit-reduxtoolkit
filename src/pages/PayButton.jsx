@@ -8,7 +8,7 @@ const PayButton = ({ cartItems }) => {
       axios
         .post("http://localhost:3001/create-checkout-session", {
           cartItems,
-          userId: userInfo._id,
+          userId: userInfo._id || userInfo.sub,
         })
         .then((res) => {
           if (res.data.url) {

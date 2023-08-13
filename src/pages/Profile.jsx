@@ -5,17 +5,16 @@ import axios from "axios";
 const Profile = () => {
   const { userInfo } = useContext(UserContext);
   const [orders, setOrders] = useState([]);
-  console.log(userInfo);
+  async function fetch() {
+    const res = await axios.post("http://localhost:3001/orders", {
+      id: userInfo._id || userInfo.sub,
+    });
+    setOrders(res.data);
+    console.log(res.data);
+  }
   useEffect(() => {
-    axios
-      .post("http://localhost:3001/orders", {
-        id: userInfo._id || userInfo.sub,
-      })
-      .then((res) => {
-        setOrders(res.data);
-        console.log(orders);
-      });
-  }, []);
+    fetch();
+  }, [orders]);
 
   return (
     <>
@@ -44,10 +43,29 @@ const Profile = () => {
         <h1 className="text-3xl">Orders History</h1>
 
         <div className="ordersList">
-          {orders.length > 0 &&
-            orders.map((item) => {
-              <img src={item.products[0].image} />;
-            })}
+          {orders?.map((item) => {
+            return item.products.map((product) => {
+              return (
+                <div
+                  className="my-4 flex gap-4 shadow-sm p-4 max-w-full m-2"
+                  key={product.id}
+                >
+                  <img src={product.image} className="max-w-[120px]" />
+                  <div className="flex flex-col justify-center">
+                    <p>{product.title}</p>
+                    <div className="price flex gap-2">
+                      <span className="font-bold">Price: </span> $
+                      {product.price}
+                    </div>
+                    <p>
+                      <span className="font-bold">Qty: </span>
+                      {product.qty}
+                    </p>
+                  </div>
+                </div>
+              );
+            });
+          })}
         </div>
       </div>
     </>
