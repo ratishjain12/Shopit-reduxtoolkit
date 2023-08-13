@@ -56,6 +56,10 @@ const Navbar = () => {
     }
   }, []);
 
+  function navigateToProfile() {
+    navigate("/profile");
+  }
+
   return (
     <>
       <div className="nav-wrapper w-full bg-[#764abc] text-white sticky top-0">
@@ -76,7 +80,7 @@ const Navbar = () => {
             </span>
             {status ? (
               <>
-                <button className="flex">
+                <button className="flex" onClick={navigateToProfile}>
                   {userInfo?.picture && (
                     <img
                       src={userInfo?.picture}
