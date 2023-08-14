@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import Profile from "./pages/Profile";
+import ProductPage from "./pages/Product";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/checkout-success" element={<CheckoutSuccess />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/product" element={<ProductPage />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

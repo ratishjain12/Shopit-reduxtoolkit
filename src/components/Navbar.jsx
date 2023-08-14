@@ -62,7 +62,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="nav-wrapper w-full bg-[#764abc] text-white sticky top-0">
+      <div className="nav-wrapper w-full bg-[#764abc] text-white sticky top-0 z-50">
         <div className="flex container mx-auto justify-between p-2 items-center">
           <Link to="/">
             <div className="">
