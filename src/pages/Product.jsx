@@ -3,12 +3,24 @@ import React from "react";
 import { add } from "../store/cartSlice";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+
 const ProductPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   console.log(location.state.item);
   const handleAdd = () => {
     dispatch(add(location.state.item));
+    toast.success("Product Added to Cart", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -29,6 +41,18 @@ const ProductPage = () => {
           Add to Cart
         </button>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+      />
     </div>
   );
 };

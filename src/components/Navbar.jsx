@@ -125,7 +125,7 @@ const Navbar = () => {
           <div
             className={`mobile-nav md:hidden absolute  w-full ${
               navStatus ? "top-0  left-0" : "top-[-300px] left-0"
-            } flex flex-col justify-center items-center bg-white text-[#764abc] gap-6 p-6 shadow-sm duration-100 ease-in-out`}
+            } flex flex-col justify-center items-center bg-white text-[#764abc] gap-6 p-6 shadow-sm duration-500 ease-in-out`}
           >
             <Link to="/" onClick={changeNavStatus}>
               Home

@@ -1,6 +1,7 @@
 import { ToastContainer, toast } from "react-toastify";
 import { add } from "../store/cartSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Productcard = ({
   category,
   description,
@@ -11,7 +12,7 @@ const Productcard = ({
   title,
 }) => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   function handleAdd() {
     dispatch(add({ id, category, description, image, price, rating, title }));
     toast.success("Product Added to Cart", {
@@ -26,6 +27,21 @@ const Productcard = ({
     });
   }
 
+  function navigateHandler(product) {
+    navigate("/product", {
+      state: {
+        item: {
+          category,
+          description,
+          id,
+          image,
+          price,
+          rating,
+          title,
+        },
+      },
+    });
+  }
   return (
     <div className="w-[20rem] sm:h-[26rem] sm:w-[24rem] md:[w-45vw] lg:w-[16rem] md:h-[22rem]  rounded-lg shadow-md flex flex-col justify-between ">
       <img
@@ -34,10 +50,12 @@ const Productcard = ({
         alt="image"
       />
       <div className="p-3 flex-end">
-        <h4 className="font-semibold tracking-tight text-gray-700 line-clamp-2">
-          {title}
-        </h4>
-        <p className="mb-1 leading-normal line-clamp-2">{description}</p>
+        <div className="cursor-pointer" onClick={navigateHandler}>
+          <h4 className="font-semibold tracking-tight text-gray-700 line-clamp-2">
+            {title}
+          </h4>
+          <p className="mb-1 leading-normal line-clamp-2">{description}</p>
+        </div>
         <p className="mb-1 leading-normal line-clamp-2 mt-2">
           <span className="font-bold">Price: </span>${price}
         </p>

@@ -6,16 +6,23 @@ const Profile = () => {
   const { userInfo } = useContext(UserContext);
   const [orders, setOrders] = useState([]);
   async function fetch() {
+    console.log(userInfo?._id || userInfo?.sub);
     const res = await axios.post("http://localhost:3001/orders", {
-      id: userInfo._id || userInfo.sub,
+      id: userInfo?._id || userInfo?.sub,
     });
     setOrders(res.data);
-    console.log(res.data);
   }
   useEffect(() => {
     fetch();
-  }, [orders]);
+  }, []);
 
+  async function clearOrderHistory() {
+    const res = await axios.post("http://localhost:3001/clearHistory");
+    if (res) {
+      console.log(res.data);
+    }
+    fetch();
+  }
   return (
     <>
       <div className="bg-[#002147]">
@@ -43,7 +50,7 @@ const Profile = () => {
         <h1 className="text-3xl">Orders History</h1>
 
         <div className="ordersList">
-          {orders?.map((item) => {
+          {orders?.slice(0, 2).map((item) => {
             return item.products.map((product) => {
               return (
                 <div
@@ -66,7 +73,20 @@ const Profile = () => {
               );
             });
           })}
+          {!orders.length && (
+            <p className="flex justify-center mt-20 text-xl">
+              No Recent Orders...
+            </p>
+          )}
         </div>
+        {orders.length > 0 && (
+          <button
+            className=" m-2 p-2 bg-[#764abc] text-white rounded-lg"
+            onClick={clearOrderHistory}
+          >
+            Clear History
+          </button>
+        )}
       </div>
     </>
   );

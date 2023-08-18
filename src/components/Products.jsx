@@ -20,14 +20,7 @@ const Products = () => {
     <div className=" w-[90%] mx-auto flex gap-4 flex-wrap justify-evenly items-center ">
       {products.length > 0 &&
         products.map((product) => {
-          return (
-            <div
-              className="cursor-pointer"
-              onClick={() => navigateHandler(product)}
-            >
-              <Productcard key={product.id} {...product} />
-            </div>
-          );
+          return <Productcard key={product.id} {...product} />;
         })}
     </div>
   );
